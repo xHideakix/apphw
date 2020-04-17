@@ -13,7 +13,7 @@ async function loadTemplates() {
   templates = {
     list: await fsp.readFile('./templates/list.html', 'utf8'),
     homework: await fsp.readFile('./templates/homework.html', 'utf8'),
-    css: await fsp.readFile('./public/styles.css', 'utf8'),
+    css: await fsp.readFile('./public/styles.css', 'utf8')
   };
 }
 
@@ -24,11 +24,11 @@ const readBody = (req) => {
     req.on('data', data => {
       body = body + data.toString('utf8');
     });
-
+    
     req.on('end', async () => {
       resolve(parse(body));
     });
-
+    
     req.on('error', error => reject(error));
   });
 };
@@ -61,7 +61,6 @@ const requestListener = async (req, res) => {
       send(200, Mustache.render(templates.list, { title: 'Homeworks', rows: data }));
       return;
     }
-
     if (req.url.startsWith('/homeworks/')) {
       const id = req.url.substring('/homeworks/'.length);
       const homework = await collection.findOne({ id });
@@ -81,15 +80,21 @@ const requestListener = async (req, res) => {
         res.end();
         break;
       }
+      case 'DELETE': {
+        if (homework) {
+          await collection.deleteOne(homework.id);
+          const data = await collection.list();
+          send(200, Mustache.render(templates.list, { title: 'Homeworks', rows: data }));
+        }
+        break;
+      }
       }
       return;
     }
   }
-
   res.writeHead(404);
   res.end();
 };
-
 async function main() {
   await loadTemplates();
   const server = http.createServer(requestListener);

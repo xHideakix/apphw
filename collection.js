@@ -24,12 +24,17 @@ export class Collection {
   _writeData(data) {
     return fs.writeFile(this.filePath, JSON.stringify(data, null, 2), 'utf-8');
   }
-
+  async deleteOne(id) {
+    const documents = await this._readData();
+    const deletedHomeworks = documents.filter(doc => {
+      return doc.id !== id;
+    });
+    return this._writeData(deletedHomeworks);
+  }
   async updateOne(id, update) {
     const documents = await this._readData();
     const updatedHomeworks = documents.map(doc =>
       (doc.id === id) ? Object.assign({}, doc, update) : doc);
     return this._writeData(updatedHomeworks);
   }
-
 }

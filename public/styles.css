@@ -1,12 +1,25 @@
 table tr {
-  background-color: bisque;
+  text-align: center;
+  background-color: #27ae60;
+  color:#f1c40f;
 }
-
+td  {
+  padding: 10px;
+}
+a {
+  text-decoration: none;
+  color:#fff;
+}
 form {
   display: flex;
   flex-direction: column;
 }
-
+.delete {
+  background-color: #c0392b;
+  padding: 5px;
+  color:#fff;
+  font-weight: bolder;
+}
 label {
   display: flex;
   flex-direction: column;

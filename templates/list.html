@@ -12,8 +12,19 @@
     <tr>
       <td>{{ number }}</td>
       <td><a href="/homeworks/{{ id }}">{{ title }}</a></td>
+      <td><button onclick="deleteHomework('{{ id }}')" class="delete">X</button></td>
     </tr>
     {{/rows}}
   </table>
+  <script type="text/javascript">
+    function deleteHomework(id) {
+      let oReq = new XMLHttpRequest();
+      oReq.open("DELETE",`/homeworks/${id}`, true);
+      oReq.send();
+      oReq.onload = function() {
+        document.location.reload(true);
+      }
+    }
+  </script>
 </body>
 </html>
