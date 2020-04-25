@@ -8,6 +8,11 @@
 </head>
 <body>
   <table>
+    <tr class="addHomeworks">
+      <td>
+      <a href="/homeworks/new" onclick="addHomeworkGET()">Add <b>+</b></a>
+      </td>
+    </tr>
     {{#rows}}
     <tr>
       <td>{{ number }}</td>
@@ -24,6 +29,12 @@
       oReq.onload = function() {
         document.location.reload(true);
       }
+    }
+
+    function addHomeworkGET() {
+      let oReq = new XMLHttpRequest();
+      oReq.open("GET", "/homeworks/new", true);
+      oReq.send();
     }
   </script>
 </body>

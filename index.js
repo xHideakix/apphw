@@ -13,6 +13,7 @@ async function loadTemplates() {
   templates = {
     list: await fsp.readFile('./templates/list.html', 'utf8'),
     homework: await fsp.readFile('./templates/homework.html', 'utf8'),
+    addhomework: await fsp.readFile('./templates/addhomework.html', 'utf8'),
     css: await fsp.readFile('./public/styles.css', 'utf8')
   };
 }
@@ -34,7 +35,7 @@ const readBody = (req) => {
 };
 
 const requestListener = async (req, res) => {
-
+  
   const send = (status, data) => {
     res.writeHead(status);
     if (data) {
@@ -54,6 +55,23 @@ const requestListener = async (req, res) => {
     res.end();
     return;
   }
+
+  if (req.url.startsWith('/homeworks/new')) {
+    switch (req.method) {
+    case 'GET': {
+      const body = templates.addhomework;
+      send(200, body);
+    }
+      break;
+    case 'POST': {
+      const doc = await readBody(req);
+      await collection.insertOne(doc);
+      res.writeHead(302, { Location: '/homeworks' });
+      res.end();
+    }
+      break;
+    }      
+  } 
 
   if (req.url.startsWith('/homeworks')) {
     if (req.method === 'GET' && (req.url === '/homeworks' || req.url === '/homeworks/')) {

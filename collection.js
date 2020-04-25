@@ -11,6 +11,13 @@ export class Collection {
     return this._readData();
   }
 
+  async insertOne(doc) {
+    doc.id = Math.random().toString(16).slice(-12) + Math.random().toString(16).slice(-12);
+    const documents = await this._readData();
+    documents.push(doc);
+    return this._writeData(documents);
+  }
+
   async findOne(query) {
     return this._readData()
       .then(items => items.find(item => item.id === query.id));
