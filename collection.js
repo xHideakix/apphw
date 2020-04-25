@@ -14,7 +14,7 @@ export class Collection {
   async insertOne(doc) {
     doc.id = Math.random().toString(16).slice(-12) + Math.random().toString(16).slice(-12);
     const documents = await this._readData();
-    documents.push(doc);
+    documents.unshift(doc);
     return this._writeData(documents);
   }
 
